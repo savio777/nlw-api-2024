@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch ./src/http/server.ts",
-    "init:docker": "docker compose up -d"
+    "init:docker": "docker compose up -d",
+    "prisma:migrate:dev": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
@@ -19,6 +21,8 @@
     "node": ">=20"
   },
   "dependencies": {
-    "fastify": "^4.26.1"
+    "@prisma/client": "5.9.1",
+    "fastify": "^4.26.1",
+    "zod": "^3.22.4"
   }
 }

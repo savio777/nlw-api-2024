@@ -17,3 +17,5 @@
 - instalação do `prisma` em dev
 - inicialização/configuração inicial do prisma `npx prisma init`
 - edição do .env de acordo com o usuário e nome do banco criado
+- criação de tabelas no `schema.prisma`
+- criação de scripts de manipulações de migrations

@@ -6,7 +6,8 @@
   "author": "Sávio <saviopf22@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch ./src/http/server.ts"
+    "dev": "tsx watch ./src/http/server.ts",
+    "init:docker": "docker compose up -d"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

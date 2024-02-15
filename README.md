@@ -22,6 +22,7 @@
 
 ### próximos passos:
 
+- [ ] criar endpoints de get por id e todas as votações com contadores de votos
 - [ ] organização de rotas com prefixo na base da rota
 - [ ] tratativa de erros
 - [ ] middleware se usuário está validado e já salvar cookies previamente

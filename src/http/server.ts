@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import { createPoll } from "../routes/polls/create";
+import { getPollById } from "../routes/polls/getById";
 
 const app = Fastify({
   logger: true,
@@ -10,6 +11,7 @@ app.get("/", (request, reply) => ({
 }));
 
 app.register(createPoll);
+app.register(getPollById);
 
 try {
   app.listen({ port: 3000 });

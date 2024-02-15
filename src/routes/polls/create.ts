@@ -30,6 +30,11 @@ export async function createPoll(app: FastifyInstance) {
       },
     });
 
-    return reply.status(201).send({ poll, options: pollOptions });
+    return reply.status(201).send({
+      poll: {
+        ...poll,
+        options: pollOptions,
+      },
+    });
   });
 }

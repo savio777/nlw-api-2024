@@ -5,7 +5,7 @@ import { prisma } from "../../lib/prisma";
 export async function getPollById(app: FastifyInstance) {
   app.get("/polls/:pollId", async (request, reply) => {
     const getPollsParamsDto = z.object({
-      pollId: z.string(),
+      pollId: z.string().uuid(),
     });
 
     const { pollId } = getPollsParamsDto.parse(request.params);

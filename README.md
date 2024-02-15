@@ -19,3 +19,9 @@
 - edição do .env de acordo com o usuário e nome do banco criado
 - criação de tabelas no `schema.prisma`
 - criação de scripts de manipulações de migrations
+
+### próximos passos:
+
+- [ ] organização de rotas com prefixo na base da rota
+- [ ] tratativa de erros
+- [ ] middleware se usuário está validado e já salvar cookies previamente

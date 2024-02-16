@@ -2,8 +2,10 @@ import { randomUUID } from "node:crypto";
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 
-import { prisma } from "../../lib/prisma";
-import { redis } from "../../lib/redis";
+import { prisma } from "../../../lib/prisma";
+import { redis } from "../../../lib/redis";
+import { voting } from "../../../utils/voting-pub-sub";
+import { getPollOptionService } from "../../../services/polls/get-poll-option.service";
 
 const ONE_MONTH = 60 * 60 * 30;
 
@@ -36,7 +38,21 @@ export async function voteOnPoll(app: FastifyInstance) {
       ) {
         await prisma.vote.delete({ where: { id: userPreviousVoteOnPoll.id } });
 
-        await redis.zincrby(pollId, -1, userPreviousVoteOnPoll.pollOptionId);
+        const votes = await redis.zincrby(
+          pollId,
+          -1,
+          userPreviousVoteOnPoll.pollOptionId
+        );
+
+        const userPreviousVoteOnPollOption = await getPollOptionService(
+          userPreviousVoteOnPoll.pollOptionId
+        );
+
+        voting.publish(pollId, {
+          title: userPreviousVoteOnPollOption.title,
+          pollOpionId: userPreviousVoteOnPoll.pollOptionId,
+          votes: Number(votes),
+        });
       }
     }
 
@@ -59,7 +75,15 @@ export async function voteOnPoll(app: FastifyInstance) {
       },
     });
 
-    await redis.zincrby(pollId, 1, optionId);
+    const votes = await redis.zincrby(pollId, 1, optionId);
+
+    const option = await getPollOptionService(optionId);
+
+    voting.publish(pollId, {
+      title: option.title,
+      pollOpionId: optionId,
+      votes: Number(votes),
+    });
 
     return reply.status(201).send({
       poll: {

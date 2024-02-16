@@ -3,6 +3,7 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 
 import { prisma } from "../../lib/prisma";
+import { redis } from "../../lib/redis";
 
 const ONE_MONTH = 60 * 60 * 30;
 
@@ -34,6 +35,8 @@ export async function voteOnPoll(app: FastifyInstance) {
         userPreviousVoteOnPoll.pollOptionId !== optionId
       ) {
         await prisma.vote.delete({ where: { id: userPreviousVoteOnPoll.id } });
+
+        await redis.zincrby(pollId, -1, userPreviousVoteOnPoll.pollOptionId);
       }
     }
 
@@ -48,7 +51,7 @@ export async function voteOnPoll(app: FastifyInstance) {
       });
     }
 
-    await prisma.vote.create({
+    const vote = await prisma.vote.create({
       data: {
         sessionId,
         pollId,
@@ -56,10 +59,13 @@ export async function voteOnPoll(app: FastifyInstance) {
       },
     });
 
+    await redis.zincrby(pollId, 1, optionId);
+
     return reply.status(201).send({
       poll: {
         pollId,
         optionId,
+        vote,
       },
       sessionId,
     });

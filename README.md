@@ -1,3 +1,5 @@
+![Captura de tela_2024-02-16_14-21-58](https://github.com/savio777/nlw-api-2024/assets/35678887/64a405c5-ee32-4bfe-a3fe-c1bf1191abb7)
+
 ### Programas necessários e plugins recomendados:
 
 - Node 20 ou acima

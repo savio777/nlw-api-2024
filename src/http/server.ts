@@ -1,4 +1,4 @@
-import Fastify from "fastify";
+import Fastify, { errorCodes } from "fastify";
 import fastifyCookie from "@fastify/cookie";
 import fastifyWebsocket from "@fastify/websocket";
 
@@ -29,6 +29,10 @@ app.register(getPollById);
 app.register(getAllPolls);
 app.register(voteOnPoll);
 app.register(pollResults);
+
+app.setErrorHandler((error, _, reply) => {
+  reply.status(400).send({ error: true, message: error });
+});
 
 try {
   app.listen({ port: 3000 });
